@@ -34,7 +34,7 @@
         <tr>
             <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                 <div class="flex items-center">
-                    <div class="font-medium text-gray-800 dark:text-gray-100">{{player.name}}</div>
+                    <div class="font-medium text-gray-800 dark:text-gray-100">{{player.first_name}} {{player.last_name}}</div>
                 </div>
             </td>
             <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
@@ -42,5 +42,4 @@
             </td>
         </tr>
         {% endfor %}
-<script src="static/js/players.js"></script>
 {% endblock content %}
