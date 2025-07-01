@@ -1,13 +1,45 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.template import loader
+import helpers
+from django.http import Http404, JsonResponse
+from django.shortcuts import render, redirect
 
-from .models import Course
-
+from . import services
 
 def course_list(request):
-    course_list = Course.objects.all
-    template = loader.get_template("courses/list.html")
-    context = {"courses": course_list}
-    return HttpResponse(template.render(context, request))
+    queryset = services.get_publish_courses()
+    context = {
+        "course_list": queryset
+    }
+    template_name = "courses/list.html"
+    # if request.htmx:
+    #     template_name = "courses/snippets/list-display.html"
+    #     context['queryset'] = queryset[:3]
+    return render(request, template_name, context)
 
+def course_detail(request, course_id=None, *args, **kwarg):
+    course_obj = services.get_course_detail(course_id=course_id)
+    print(course_obj)
+    if course_obj is None:
+        raise Http404
+    lessons_queryset = services.get_course_lessons(course_obj)
+    context = {
+        "course": course_obj,
+        "lessons": lessons_queryset,
+    }
+    # return JsonResponse({"data": course_obj.id, 'lesson_ids': [x.path for x in lessons_queryset] })
+    return render(request, "courses/detail.html", context)
+
+
+def lesson_detail(request, course_id=None, lesson_id=None, *args, **kwargs):
+    lesson_obj = services.get_lesson_detail(
+        course_id=course_id,
+        lesson_id=lesson_id
+    )
+    if lesson_obj is None:
+        raise Http404
+
+    template_name = "courses/lesson.html"
+    context = {
+        "object": lesson_obj
+    }
+    
+    return render(request, template_name, context)
