@@ -7,7 +7,7 @@ from . import services
 def course_list(request):
     queryset = services.get_publish_courses()
     context = {
-        "course_list": queryset
+        "courses": queryset
     }
     template_name = "courses/list.html"
     # if request.htmx:
@@ -21,6 +21,7 @@ def course_detail(request, course_id=None, *args, **kwarg):
     if course_obj is None:
         raise Http404
     lessons_queryset = services.get_course_lessons(course_obj)
+    print("lesson : ", lessons_queryset[0])
     context = {
         "course": course_obj,
         "lessons": lessons_queryset,
