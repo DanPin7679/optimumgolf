@@ -32,6 +32,10 @@ ALLOWED_HOSTS = [
     ".railway.app"
 ]
 
+# CSRF_TRUSTED_ORIGINS = [
+#     ".railway.app"
+# ]
+
 if DEBUG:
     ALLOWED_HOSTS = ["*"]
 # Application definition
@@ -46,6 +50,7 @@ INSTALLED_APPS = [
 
     'players',
     'stats',
+    'assessments',
     'courses'
 ]
 

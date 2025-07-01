@@ -11,6 +11,7 @@ urlpatterns = [
     path('', views.home),
     path("players/", include("players.urls")),
     path("stats/", include("stats.urls")),
+    path("assessments/", include("assessments.urls")),
     path("courses/", include("courses.urls")),
     
     

@@ -82,6 +82,53 @@ class Course(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
 
+    def save(self, *args, **kwargs):
+        # before save
+        if self.public_id == "" or self.public_id is None:
+            self.public_id = generate_public_id(self)
+        super().save(*args, **kwargs)
+        # after save
+
+    def get_absolute_url(self):
+        return self.path
+    
+    @property
+    def path(self):
+        return f"/courses/{self.public_id}"
+
+    def get_display_name(self):
+        return f"{self.title} - Course"
+
+    def get_thumbnail(self):
+        if not self.image:
+            return None
+        return helpers.get_cloudinary_image_object(
+            self, 
+            field_name='image',
+            as_html=False,
+            width=382
+        )
+
+    def get_display_image(self):
+        if not self.image:
+            return None
+        return helpers.get_cloudinary_image_object(
+            self, 
+            field_name='image',
+            as_html=False,
+            width=750
+        )
+
     @property
     def is_published(self):
         return self.status == PublishStatus.PUBLISHED
+    
+    
+
+
+class Lesson(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    
+    public_id = models.CharField(max_length=130, blank=True, null=True, db_index=True)
+    title = models.CharField(max_length=120)
+    description = models.TextField(blank=True, null=True)
