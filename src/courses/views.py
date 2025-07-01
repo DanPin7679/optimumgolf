@@ -6,7 +6,7 @@ from .models import Course
 
 
 def course_list(request):
-    player_list = Course.objects.all
+    course_list = Course.objects.all
     template = loader.get_template("courses/list.html")
     context = {"courses": course_list}
     return HttpResponse(template.render(context, request))

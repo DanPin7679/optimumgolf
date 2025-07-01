@@ -5,9 +5,13 @@ from . import views
 
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('healthz/', views.healthz_view),
+
     path('', views.home),
     path("players/", include("players.urls")),
     path("stats/", include("stats.urls")),
-    path('healthz/', views.healthz_view),
-    path('admin/', admin.site.urls),
+    path("courses/", include("courses.urls")),
+    
+    
 ]
